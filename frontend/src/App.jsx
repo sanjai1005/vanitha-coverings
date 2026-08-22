@@ -3018,37 +3018,6 @@ export default function App() {
       {/* Customer Chat Assistant (Hidden for Admin) */}
       {currentUser?.role !== 'ADMIN' && (
         <>
-          {/* Always-Visible Chatbot Invitation Banner */}
-          {!isChatOpen && (
-            <div
-              style={{
-                position: 'fixed', bottom: '90px', right: '24px',
-                background: 'linear-gradient(135deg, var(--primary), #80182a)',
-                color: '#fff', padding: '12px 16px', borderRadius: '14px',
-                boxShadow: '0 8px 24px rgba(90,12,26,0.35)',
-                zIndex: 998, maxWidth: '270px',
-                borderLeft: '4px solid var(--gold)', animation: 'slideUp 0.4s ease-out'
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <MessageSquare size={16} style={{ color: 'var(--gold)' }} />
-                  <strong style={{ fontSize: '0.85rem', fontFamily: 'var(--font-royal)', color: 'var(--gold-glowing)' }}>
-                    {t.chatbotTitle}
-                  </strong>
-                </div>
-              </div>
-              <p style={{ fontSize: '0.8rem', lineHeight: '1.35', opacity: 0.95, cursor: 'pointer', margin: '4px 0 6px' }} onClick={() => setIsChatOpen(true)}>
-                {lang === 'en'
-                  ? '💬 Have a custom jewel idea? Tell us — we can arrange it for you!'
-                  : '💬 உங்களுக்கு ஒரு தனிப்பயன் நகை வேண்டுமா? சொல்லுங்கள் — நாங்கள் ஏற்பாடு செய்கிறோம்!'}
-              </p>
-              <span style={{ fontSize: '0.75rem', color: 'var(--gold)', fontWeight: '700', cursor: 'pointer' }} onClick={() => setIsChatOpen(true)}>
-                {lang === 'en' ? 'Click to Chat →' : 'அழுத்தி பேசுங்கள் →'}
-              </span>
-            </div>
-          )}
-
           {/* Floating Chatbot Widget */}
           <div className="chatbot-widget">
             <div className="chatbot-toggle" onClick={() => setIsChatOpen(!isChatOpen)}>
@@ -3394,11 +3363,11 @@ export default function App() {
 
           <div className="footer-contact">
             <p style={{ fontWeight: '700', fontSize: '1.05rem', color: '#ffe58f', margin: 0 }}>
-              📞 {lang === 'en' ? 'Contact Owner / WhatsApp: ' : 'உரிமையாளரை தொடர்பு கொள்ள: '}
+              📞 {lang === 'en' ? 'Owner (Vanitha) / WhatsApp: ' : 'உரிமையாளர் (வணிதா) / வாட்ஸ்அப்: '}
               <a href="tel:8825869139" style={{ color: '#ffe58f', textDecoration: 'none' }}>8825869139</a>
             </p>
-            <p style={{ fontSize: '0.88rem', color: 'rgba(255, 255, 255, 0.75)', marginTop: '6px', marginBotton: 0 }}>
-              📍 {lang === 'en' ? 'Vanitha Coverings, Tamil Nadu & Puducherry' : 'வணிதா கவரிங்ஸ், தமிழ்நாடு & புதுச்சேரி'}
+            <p style={{ fontSize: '0.88rem', color: 'rgba(255, 255, 255, 0.75)', marginTop: '6px', marginBottom: 0 }}>
+              📍 {lang === 'en' ? 'Vanitha Coverings, Puducherry' : 'வணிதா கவரிங்ஸ், புதுச்சேரி'}
             </p>
           </div>
 

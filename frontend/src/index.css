@@ -767,7 +767,42 @@ h1, h2, h3, h4 { font-family: var(--font-royal); font-weight: 600; letter-spacin
 
   .header {
     width: 100%;
-    padding: 0.75rem 1rem;
+    padding: 0.65rem 0.8rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
+  .header-brand {
+    gap: 6px;
+  }
+
+  .header-logo {
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+  }
+
+  .header-logo span {
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+  }
+
+  .header-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    justify-content: flex-end;
+    max-width: 100%;
+  }
+
+  .header-nav .btn, .header-nav .btn-lang {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    white-space: nowrap;
   }
 
   .hero {
