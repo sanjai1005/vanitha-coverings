@@ -770,22 +770,21 @@ export default function App() {
       if (!res.ok) throw new Error(data.message || 'Registration failed');
       return data;
     })
-    .then(() => {
-      fetch(`${API_BASE}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ usernameOrPhone: uName, password: pass })
-      })
-      .then(r => r.json())
-      .then(uData => {
-        localStorage.setItem('vanitha_user', JSON.stringify(uData));
-        setCurrentUser(uData);
-        setShowAuthModal(false);
-        setRegisterUsername('');
-        setRegisterPassword('');
-        setRegisterConfirmPassword('');
-        setRegisterPhone('');
-      });
+    .then(data => {
+      // Instant Auto-Login without waiting for a 2nd HTTP request
+      const userData = {
+        id: data.id,
+        username: data.username || uName,
+        phoneNumber: data.phoneNumber || phone,
+        role: data.role || 'CUSTOMER'
+      };
+      localStorage.setItem('vanitha_user', JSON.stringify(userData));
+      setCurrentUser(userData);
+      setShowAuthModal(false);
+      setRegisterUsername('');
+      setRegisterPassword('');
+      setRegisterConfirmPassword('');
+      setRegisterPhone('');
     })
     .catch(err => setAuthError(err.message));
   };

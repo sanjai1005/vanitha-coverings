@@ -56,11 +56,14 @@ public class AuthController {
 
             User user = userService.registerUser(username, password, phoneNumber, role, otp, otpDestination);
 
-            return ResponseEntity.ok(Map.of(
-                "message", "Registration successful",
-                "username", user.getUsername(),
-                "role", user.getRole()
-            ));
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Registration successful");
+            response.put("username", user.getUsername());
+            response.put("phoneNumber", user.getPhoneNumber());
+            response.put("role", user.getRole());
+            response.put("id", user.getId());
+
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
