@@ -267,6 +267,7 @@ export default function App() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showAddressModal, setShowAddressModal] = useState(false);
+  const [showMobileFilterModal, setShowMobileFilterModal] = useState(false);
 
   // Delivery Address State
   const [deliveryAddress, setDeliveryAddress] = useState({
@@ -1360,35 +1361,28 @@ export default function App() {
 
       {/* Main Shop Section */}
       <main className="shop-layout animate-fade-in">
-        {/* Mobile Horizontal Category Filter Bar */}
+        {/* Mobile Category Selection Trigger */}
         <div className="mobile-filter-wrapper">
-          <div className="mobile-filter-header">
-            <span style={{ fontSize: '0.88rem', fontWeight: '700', color: 'var(--primary)' }}>
-              {lang === 'en' ? '💎 Quick Category Filter:' : '💎 விரைவு நகை பிரிவுகள்:'}
-            </span>
-          </div>
-          <div className="mobile-pills-row">
-            <button
-              className={`filter-pill ${currentCategory === 'all' ? 'active' : ''}`}
-              onClick={() => {
-                setCurrentCategory('all');
-              }}
-            >
-              {lang === 'en' ? 'Show All' : 'அனைத்தும்'}
-            </button>
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                className={`filter-pill ${currentCategory === cat.id ? 'active' : ''}`}
-                style={cat.isNew ? { background: currentCategory === cat.id ? 'linear-gradient(135deg, #7a0c20, #d4af37)' : 'linear-gradient(135deg, #d4af37, #a07800)', color: '#fff', border: 'none' } : {}}
-                onClick={() => {
-                  setCurrentCategory(cat.id);
-                }}
-              >
-                {lang === 'en' ? cat.en : cat.ta}
-              </button>
-            ))}
-          </div>
+          <button
+            type="button"
+            className="btn-mobile-cat-trigger"
+            onClick={() => setShowMobileFilterModal(true)}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Layers size={18} style={{ color: '#ffe58f' }} />
+              <span>
+                {lang === 'en' ? 'Filter Collections:' : 'நகை பிரிவு தேர்வு:'}
+                <strong style={{ marginLeft: '6px', color: '#ffe58f' }}>
+                  {currentCategory === 'all'
+                    ? (lang === 'en' ? 'Show All Designs' : 'அனைத்தும்')
+                    : currentCategory === 'NEW_COLLECTIONS'
+                      ? (lang === 'en' ? '✨ New Collections' : '✨ புதிய வரவுகள்')
+                      : (categories.find(c => c.id === currentCategory)?.en || currentCategory.split(' — ')[1] || currentCategory)}
+                </strong>
+              </span>
+            </div>
+            <ChevronDown size={18} style={{ color: '#ffe58f' }} />
+          </button>
         </div>
 
         {/* Categories Sidebar (Desktop) */}
@@ -1670,6 +1664,109 @@ export default function App() {
           )}
         </section>
       </main>
+
+      {/* Mobile Category Selection Drawer Modal */}
+      {showMobileFilterModal && (
+        <div className="modal-overlay" onClick={() => setShowMobileFilterModal(false)}>
+          <div 
+            className="modal-content animate-slide-up" 
+            style={{ maxWidth: '450px', maxHeight: '85vh', overflowY: 'auto', borderTop: '4px solid var(--primary)' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.2rem', borderBottom: '2px solid var(--gold)', paddingBottom: '0.6rem' }}>
+              <h3 style={{ color: 'var(--primary)', margin: 0, fontSize: '1.15rem' }}>
+                {lang === 'en' ? '💎 Select Jewel Category' : '💎 நகை பிரிவு தேர்வு செய்யவும்'}
+              </h3>
+              <X className="modal-close" style={{ position: 'static' }} onClick={() => setShowMobileFilterModal(false)} />
+            </div>
+
+            <div className="cat-tree-node" style={{ marginBottom: '1rem' }}>
+              <div 
+                className={`cat-parent ${currentCategory === 'all' ? 'active' : ''}`}
+                onClick={() => {
+                  setCurrentCategory('all');
+                  setShowMobileFilterModal(false);
+                }}
+              >
+                {lang === 'en' ? 'Show All Designs' : 'அனைத்து டிசைன்கள்'}
+              </div>
+            </div>
+
+            {categories.map((cat) => {
+              const hasSubs = cat.subs && cat.subs.length > 0;
+              const isSelectedParent = currentCategory === cat.id;
+
+              if (cat.isNew) {
+                return (
+                  <div key={cat.id} className="cat-tree-node" style={{ marginBottom: '1rem' }}>
+                    <div
+                      onClick={() => {
+                        setCurrentCategory(cat.id);
+                        setShowMobileFilterModal(false);
+                      }}
+                      style={{
+                        background: isSelectedParent
+                          ? 'linear-gradient(135deg, #7a0c20, #d4af37)'
+                          : 'linear-gradient(135deg, #d4af37, #a07800)',
+                        color: '#fff',
+                        fontWeight: '700',
+                        cursor: 'pointer',
+                        padding: '12px 14px',
+                        borderRadius: '8px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        fontSize: '0.95rem',
+                        boxShadow: '0 3px 12px rgba(212,175,55,0.35)'
+                      }}
+                    >
+                      <span>{lang === 'en' ? cat.en : cat.ta}</span>
+                      <span style={{ fontSize: '0.75rem', background: '#fff', color: '#7a0c20', padding: '2px 8px', borderRadius: '10px', fontWeight: '800' }}>New</span>
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <div key={cat.id} className="cat-tree-node" style={{ marginBottom: '0.8rem' }}>
+                  <div 
+                    className={`cat-parent ${isSelectedParent ? 'active' : ''}`}
+                    style={{ padding: '11px 14px', fontSize: '0.95rem' }}
+                    onClick={() => {
+                      setCurrentCategory(cat.id);
+                      setShowMobileFilterModal(false);
+                    }}
+                  >
+                    <span>{lang === 'en' ? cat.en : cat.ta}</span>
+                    {hasSubs && <ChevronRight size={16} />}
+                  </div>
+
+                  {hasSubs && (
+                    <div className="cat-subs" style={{ paddingLeft: '1.2rem', marginTop: '0.4rem' }}>
+                      {cat.subs.map((sub) => {
+                        const isSelectedSub = currentCategory === sub.id;
+                        return (
+                          <span 
+                            key={sub.id} 
+                            className={`cat-sub ${isSelectedSub ? 'active' : ''}`}
+                            style={{ padding: '8px 12px', fontSize: '0.9rem' }}
+                            onClick={() => {
+                              setCurrentCategory(sub.id);
+                              setShowMobileFilterModal(false);
+                            }}
+                          >
+                            {lang === 'en' ? sub.en : sub.ta}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Auth Modal (Login / Register / Forgot Password) */}
       {showAuthModal && (
@@ -3284,6 +3381,32 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* Full-Width Luxury Footer */}
+      <footer className="footer">
+        <div className="footer-content">
+          <div className="footer-brand">
+            <h3>{t.siteName}</h3>
+            <p style={{ fontSize: '0.9rem', color: 'rgba(255, 240, 210, 0.85)', margin: '4px 0' }}>
+              {lang === 'en' ? 'Quality Covered & Gold Plated Artificial Jewels' : 'உயர்தர கவரிங் மற்றும் ஐம்பொன் செயற்கை நகைகள்'}
+            </p>
+          </div>
+
+          <div className="footer-contact">
+            <p style={{ fontWeight: '700', fontSize: '1.05rem', color: '#ffe58f', margin: 0 }}>
+              📞 {lang === 'en' ? 'Contact Owner / WhatsApp: ' : 'உரிமையாளரை தொடர்பு கொள்ள: '}
+              <a href="tel:8825869139" style={{ color: '#ffe58f', textDecoration: 'none' }}>8825869139</a>
+            </p>
+            <p style={{ fontSize: '0.88rem', color: 'rgba(255, 255, 255, 0.75)', marginTop: '6px', marginBotton: 0 }}>
+              📍 {lang === 'en' ? 'Vanitha Coverings, Tamil Nadu & Puducherry' : 'வணிதா கவரிங்ஸ், தமிழ்நாடு & புதுச்சேரி'}
+            </p>
+          </div>
+
+          <div className="footer-bottom">
+            <p>© 2026 Vanitha Coverings. All Rights Reserved.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
