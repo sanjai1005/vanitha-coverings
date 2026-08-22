@@ -1360,8 +1360,39 @@ export default function App() {
 
       {/* Main Shop Section */}
       <main className="shop-layout animate-fade-in">
-        {/* Categories Sidebar */}
-        <aside className="sidebar">
+        {/* Mobile Horizontal Category Filter Bar */}
+        <div className="mobile-filter-wrapper">
+          <div className="mobile-filter-header">
+            <span style={{ fontSize: '0.88rem', fontWeight: '700', color: 'var(--primary)' }}>
+              {lang === 'en' ? '💎 Quick Category Filter:' : '💎 விரைவு நகை பிரிவுகள்:'}
+            </span>
+          </div>
+          <div className="mobile-pills-row">
+            <button
+              className={`filter-pill ${currentCategory === 'all' ? 'active' : ''}`}
+              onClick={() => {
+                setCurrentCategory('all');
+              }}
+            >
+              {lang === 'en' ? 'Show All' : 'அனைத்தும்'}
+            </button>
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                className={`filter-pill ${currentCategory === cat.id ? 'active' : ''}`}
+                style={cat.isNew ? { background: currentCategory === cat.id ? 'linear-gradient(135deg, #7a0c20, #d4af37)' : 'linear-gradient(135deg, #d4af37, #a07800)', color: '#fff', border: 'none' } : {}}
+                onClick={() => {
+                  setCurrentCategory(cat.id);
+                }}
+              >
+                {lang === 'en' ? cat.en : cat.ta}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Categories Sidebar (Desktop) */}
+        <aside className="sidebar desktop-sidebar">
           <h3>
             {t.categoriesTitle}
           </h3>

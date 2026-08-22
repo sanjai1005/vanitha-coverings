@@ -701,11 +701,94 @@ h1, h2, h3, h4 { font-family: var(--font-royal); font-weight: 600; letter-spacin
 }
 
 /* ───────────────────────────────
-   RESPONSIVE
+   MOBILE CATEGORY FILTER BAR & PILLS
 ─────────────────────────────── */
+.mobile-filter-wrapper {
+  display: none;
+}
+
 @media (max-width: 900px) {
-  .shop-layout { grid-template-columns: 1fr; }
-  .sidebar { position: relative; top: 0; max-height: none; }
+  .shop-layout { 
+    grid-template-columns: 1fr; 
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  /* Hide heavy vertical desktop sidebar on mobile */
+  .desktop-sidebar { 
+    display: none !important; 
+  }
+
+  /* Show sleek horizontal mobile category bar */
+  .mobile-filter-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 0.5rem;
+    position: sticky;
+    top: 70px;
+    z-index: 150;
+    background: rgba(253, 246, 238, 0.95);
+    backdrop-filter: blur(12px);
+    padding: 10px 0;
+    border-bottom: 1.5px solid rgba(201, 151, 63, 0.3);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+  }
+
+  .mobile-filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 4px;
+  }
+
+  .btn-mobile-filter {
+    background: linear-gradient(135deg, #6b0f1f, #96152d);
+    color: #ffe58f;
+    border: 1px solid #c9973f;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(107,15,31,0.25);
+  }
+
+  .mobile-pills-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 2px 6px 2px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .mobile-pills-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-pill {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 7px 15px;
+    border-radius: 20px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    border: 1.5px solid rgba(107, 15, 31, 0.2);
+    background: #fff;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .filter-pill.active {
+    background: linear-gradient(135deg, #6b0f1f, #96152d);
+    color: #ffe58f;
+    border-color: #c9973f;
+    box-shadow: 0 3px 10px rgba(107, 15, 31, 0.35);
+  }
 }
 
 @media (max-width: 768px) {
